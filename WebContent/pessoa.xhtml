@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:include src="modelo.xhtml"></ui:include>
+
+<h:head>
+<title>Sistema</title>
+	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</h:head>
+
+<h:body>
+<title>Pessoa</title>
+<div class="container my-3" >
+
+<h:form>
+
+	<h:messages id="msg"/>
+	
+	<fieldset>
+	<legend>Nova Pessoa</legend>
+	
+	<div class="form-group">
+		<h:outputLabel value="Nome" for="nome" />
+			<h:inputText id="nome" value="#{pessoaController.pessoa.nome}" class="form-control"  
+			required="true"
+			requiredMessage="Nome obrigatório.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite o nome"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="CPF" for="cpf" />
+			<h:inputText id="cpf" value="#{pessoaController.pessoa.cpf}" class="form-control"
+			required="true"
+			requiredMessage="Cpf obrigatório.">
+			<f:passThroughAttribute name="placeholder" value="digite o CPF"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="E-mail" for="email" />
+			<h:inputText id="email" value="#{pessoaController.pessoa.email}" class="form-control"
+			required="true"
+			requiredMessage="E-mail obrigatório!.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="type" value="email"/>
+			<f:passThroughAttribute name="placeholder" value="digite o e-mail"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Sexo" for="sexo" />
+			<h:selectOneMenu id="sexo" value="#{pessoaController.pessoa.sexo}" class="form-control"
+			required="true"
+			requiredMessage="Informe o sexo.">
+			<f:ajax event="blur" render="msg"/>
+				<f:selectItem itemLabel="selecionar" noSelectionOption="true"/>
+				<f:selectItems value="#{pessoaController.todosSexos}" var="sexo" itemLabel="#{sexo.nome}" itemValue="#{sexo.id}"/>	
+			</h:selectOneMenu>
+	</div>
+	
+		<div class="form-group">
+		<h:outputLabel value="Grupo" for="grupo" />
+			<h:selectOneMenu id="grupo" value="#{pessoaController.pessoa.grupo}" class="form-control"
+			required="true"
+			requiredMessage="Informe o grupo.">
+			<f:ajax event="blur" render="msg"/>
+				<f:selectItem itemLabel="selecionar" noSelectionOption="true"/>
+				<f:selectItems value="#{pessoaController.todosGrupos}" var="grupo" itemLabel="#{grupo.nome}" itemValue="#{grupo.id}"/>	
+			</h:selectOneMenu>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Usuario" for="usuario" />
+			<h:inputText id="usuario" value="#{pessoaController.pessoa.usuario}" class="form-control"
+			required="true"
+			requiredMessage="Informe o unuário.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite o nome de usuario"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Senha" for="senha" />
+			<h:inputText id="senha" value="#{pessoaController.pessoa.senha}" class="form-control"
+			required="true"
+			requiredMessage="Informe o unuário.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite a senha"/>	
+		</h:inputText>
+	</div>
+	
+	
+	
+	
+	<h:commandButton value="Gravar" action="#{pessoaController.gravar}" class="btn btn-success my-4"/>
+
+	</fieldset>	
+</h:form>
+
+
+<h:form>
+	<h:dataTable class="table" value="#{pessoaController.todasPessoas}" var="p">
+		
+		<h:column>
+			<f:facet name="header">Nome</f:facet>
+			<h:outputText value="#{p.nome}"/>
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">Remover</f:facet>
+			<h:commandButton value="remove" action="#{pessoaController.remover(p)}" class="btn btn-danger"/>
+		</h:column>
+			
+		<h:column>
+			<f:facet name="header">Atualizar</f:facet>
+			<h:commandButton value="atualiza" action="#{pessoaController.carregar(p)}" class="btn btn-primary"/>
+		</h:column>
+		
+	</h:dataTable>
+</h:form>
+	
+</div>	
+</h:body>
+
+</html>
+	

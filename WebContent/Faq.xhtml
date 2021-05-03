@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:include src="modelo.xhtml"></ui:include>
+
+<h:head>
+<title>Sistema</title>
+	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</h:head>
+
+
+<h:body>
+<title>Faq</title>
+<div class="container my-3" >
+
+<h:form>
+
+	<h:messages id="msg"/>
+	
+	<fieldset>
+	<legend>Novo Faq</legend>
+
+		<div class="form-group">
+			<h:outputLabel  value="Nome" for="nome"/>
+			<h:inputText class="form-control" id="nome" value="#{faqController.faq.nome}"
+			required="true"
+			requiredMessage="Nome obrigatório."/>
+			<f:passThroughAttribute name="placeholder"
+			value="Digite o nome"/>
+			
+		</div>
+			
+		<div class="form-group">	
+			<h:outputLabel value="E-mail" for="email"/>
+			<h:inputText class="form-control" id="email" value="#{faqController.faq.email}"
+			required="true"
+			requiredMessage="E-mail obrigatório!.">
+			<f:ajax event="blur" render="msg"/>
+				<f:passThroughAttribute name="type" value="email"/>
+			</h:inputText>
+		</div>	
+			
+		<div class="form-group">	
+			<h:outputLabel value="Mensagem" for="mensagem"/>
+			<h:inputTextarea class="form-control" id="mensagem" value="#{faqController.faq.mensagem}" required="true"
+			requiredMessage="Mensagem obrigatória!." >
+			<f:ajax event="blur" render="msg"/>
+				<f:passThroughAttribute name="type" value="mensagem"/>
+			</h:inputTextarea>
+		</div>	
+			
+			
+			<h:commandButton value="Gravar" action="#{faqController.gravar}" class="btn btn-success my-4"/>
+			
+		</fieldset>
+	
+	</h:form>
+	
+	
+	<h:form>
+		<h:dataTable class="table" value="#{faqController.todosFaqs}" var="f">
+		
+			<h:column>
+				<f:facet name="header">Identificador</f:facet>
+				<h:outputText value="#{f.id}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{f.nome}"/>
+			</h:column>
+			
+			
+			
+			<h:column>
+				<f:facet name="header">E-mail</f:facet>
+				<h:outputText value="#{f.email}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Mensagem</f:facet>
+				<h:outputText value="#{f.mensagem}"/>
+			</h:column>
+			
+			
+			
+			<h:column>
+				<f:facet name="header">Remover</f:facet>
+				<h:commandButton value="remove" action="#{faqController.remover(f)}" class="btn btn-danger"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Atualizar</f:facet>
+				<h:commandButton value="atualiza" action="#{faqController.carregar(f)}" class="btn btn-primary"/>
+			</h:column>
+			
+			
+		</h:dataTable>
+	</h:form>
+
+
+</div>
+</h:body>
+
+
+
+</html>

@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:include src="modelo.xhtml"></ui:include>
+<h:head>
+<title>Sistema</title>
+	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</h:head>
+
+<h:body>
+	<div class="container my-3" >
+	<h:form>
+		<fieldset>
+			<legend>Dados da Inscricao</legend>
+			
+			<div class="form-group">
+				<h:outputText value="Data" for="datainic" />
+				<h:inputText id="datainic" value="#{inscricaoController.inscricao.dtinscricaoinic.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+				</h:inputText>
+			</div>	
+			
+			<div class="form-group">
+				<h:outputText value="Data" for="datafim" />
+				<h:inputText id="datafim" value="#{inscricaoController.inscricao.dtinscricaofim.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+				</h:inputText>
+			</div>	
+				
+		</fieldset>
+
+		<fieldset>
+			<legend>Dados da Inscricao</legend>
+
+			<h:panelGrid columns="5">
+				<h:outputText value="Atividade" for="atividade" />
+				<h:selectOneMenu id="atividade" value="#{inscricaoController.atividadeid}" required="true" requiredMessage="atividade obrigatório!">
+					<f:selectItem itemLabel="Selecionar" noSelectionOption="true"/>
+					<f:selectItems value="#{inscricaoController.todasAtividades}" var="atividade" itemLabel="#{atividade.nome}" itemValue="#{atividade.id}"/>
+				</h:selectOneMenu>
+				
+				
+				<h:outputText value="Quantidade de vagas" for="vagas" />
+				<h:inputText id="vagas" value="#{inscricaoController.nvagas}" required="true" requiredMessage="Quantidade Obrigatoria"/>
+				
+				<br></br><br></br><br></br>
+				
+				<h:commandButton value="Gerar inscrição" action="#{inscricaoController.gravarItem}" class="btn btn-primary">
+				
+				</h:commandButton>
+				
+				
+			</h:panelGrid>
+			
+			<h:dataTable class="table" value="#{inscricaoController.todasInscricoes}" var="ins">
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{inscricao.atividade.nome}"/>
+				</h:column>
+						
+				
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink value="X" action="#{inscricaoController.removerItem(ins)}" class="btn btn-danger"/>
+				</h:column>
+			</h:dataTable>
+			
+				
+			<h:commandButton value="Gravar" action="#{inscricaoController.gravar}" class="btn btn-success my-4" >
+			<f:ajax execute="data" render="@form :formInscricao:tabelaInscricao"></f:ajax>
+			</h:commandButton>
+		</fieldset>
+	</h:form>
+	
+	<h:form id="formInscricao">
+		<h:dataTable class="table" value="#{inscricaoController.todasInscricoes}" var="inscricao" id="tabelaInscricao">
+			<h:column>
+				<f:facet name="header">Data inicio</f:facet>
+				<h:outputText value="#{inscricao.dtinscricaoinic.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+				</h:outputText>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Data Final</f:facet>
+				<h:outputText value="#{inscricao.dtinscricaofim.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+				</h:outputText>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Alterar</f:facet>
+				<h:commandLink value="altera" action="#{inscricaoController.carregar(inscricao)}"/>
+			</h:column>
+			
+			<h:column>
+			<f:facet name="header">Remover</f:facet>
+				<h:commandLink value="remove" action="#{inscricaoController.remover(inscricao)}"/>
+			</h:column>
+			
+		</h:dataTable>
+		</h:form>
+		</div>
+</h:body>
+</html>

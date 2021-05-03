@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:include src="modelo.xhtml"></ui:include>
+<h:head>
+<title>Sistema</title>
+	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</h:head>
+
+<h:body>
+<title>Evento</title>
+<div class="container my-3" >
+	<h:form>
+	
+		<h:messages id="msg"/>
+	
+	<fieldset>
+	<legend>Novo Evento</legend>
+	
+	
+	<div class="form-group">
+		<h:outputLabel value="Nome" for="nome" />
+			<h:inputText id="nome" value="#{eventoController.evento.nome}" class="form-control"
+			required="true"
+			requiredMessage="Nome obrigatório.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite o nome"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Data do Inicio do Evento" for="dtinic"/>
+			<h:inputText id="dtinic" value="#{eventoController.evento.dtinic.time}" class="form-control">
+				<f:passThroughAttribute name="type" value="date"/>
+				<f:convertDateTime pattern="yyyy-MM-dd"  timeZone="America/Sao_Paulo"/>
+			</h:inputText>
+	</div>	
+			
+	<div class="form-group">
+		<h:outputLabel value="Data do Fim do Evento" for="dtfi"/>
+			<h:inputText id="dtfi" value="#{eventoController.evento.dtfi.time}" class="form-control">
+				<f:passThroughAttribute name="type" value="date"/>
+				<f:convertDateTime pattern="yyyy-MM-dd"  timeZone="America/Sao_Paulo"/>
+			</h:inputText>	
+	</div>
+	
+	
+	
+		
+	<div class="form-group">	
+		<h:outputLabel value="Programacao" for="programacao" />
+			<h:inputText id="programacao" value="#{eventoController.evento.programacao}" class="form-control">
+			<f:passThroughAttribute name="placeholder" value="insira a imagem da programacao"/>	
+		</h:inputText>
+	</div>
+	
+	 <div class="form-group">
+		<h:outputLabel value="Mapa" for="mapa" />
+			<h:inputText id="mapa" value="#{eventoController.evento.mapa}" class="form-control">
+			<f:passThroughAttribute name="placeholder" value="insira a imagem do mapa"/>	
+		</h:inputText>
+	 </div>
+	 	
+	
+	
+	<div class="form-group">
+		<h:outputLabel value="Apoiador" for="apoiadorid"/>
+			<h:selectOneMenu id="apoiadorid" value="#{eventoController.apoiadorid}" class="form-control">
+				<f:selectItem itemLabel="Selecionar" noSelectionOption="true"/>
+				<f:selectItems value="#{eventoController.todosApoiadores}"
+				var="apoiador" itemLabel="#{apoiador.nome}" itemValue="#{apoiador.id}"/>
+			</h:selectOneMenu>
+	</div>		
+	 
+	 
+	 
+		
+		<h:commandButton value="Gravar" action="#{eventoController.gravar}" class="btn btn-success my-4"/>
+		
+	
+	</fieldset>	
+	</h:form>
+	
+	<h:form>
+		<h:dataTable class="table" value="#{eventoController.todosEventos}" var="e">
+		
+			<h:column>
+				<f:facet name="header">Identificador</f:facet>
+				<h:outputText value="#{e.id}"/>
+			</h:column>
+		
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{e.nome}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Data Inicio do Evento</f:facet>
+				<h:outputText value="#{e.dtinic.time}">
+				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+				</h:outputText>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Data final do Evento</f:facet>
+				<h:outputText value="#{e.dtfi.time}">
+				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+				</h:outputText>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Programacao</f:facet>
+				<h:outputText value="#{e.programacao}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Mapa</f:facet>
+				<h:outputText value="#{e.mapa}"/>
+			</h:column>
+			
+			
+			
+			<h:column>
+				<f:facet name="header">Apoiador</f:facet>
+				<h:outputText value="#{e.apoiador.nome}"/>
+			</h:column>
+			
+			
+		
+			<h:column>
+				<f:facet name="header">Remover</f:facet>
+				<h:commandButton value="remove" action="#{eventoController.remover(e)}" class="btn btn-danger"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Atualizar</f:facet>
+				<h:commandButton value="atualiza" action="#{eventoController.carregar(e)}" class="btn btn-primary"/>
+			</h:column>
+			
+		</h:dataTable>
+	</h:form>
+	
+</div>	
+</h:body>
+
+</html>

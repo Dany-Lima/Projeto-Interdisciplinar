@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:include src="modelo.xhtml"></ui:include>
+<h:head>
+<title>Sistema</title>
+	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</h:head>
+
+<h:body>
+<title>Atividade</title>
+<div class="container my-3" >
+
+<h:form>
+
+	<h:messages id="msg"/>
+	
+	<fieldset>
+	<legend>Nova Atividade</legend>
+	
+	<div class="form-group">
+		<h:outputLabel value="Nome" for="nome" />
+			<h:inputText id="nome" value="#{atividadeController.atividade.nome}" class="form-control" 
+			required="true"
+			requiredMessage="Nome obrigatório.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite o nome da atividade"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Descrição" for="descricao" />
+			<h:inputText id="descricao" value="#{atividadeController.atividade.descricao}" class="form-control"
+			required="true"
+			requiredMessage="Descrição obrigatória.">
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="descreva brevemente como será a atividade"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Quantidade de vagas" for="qtdvagas" />
+			<h:inputText id="qtdvagas" value="#{atividadeController.atividade.qtdvagas}" class="form-control"
+			required="true"
+		    requiredMessage="Quantidade obrigatória."
+		    validatorMessage="Digite um número maior que 0."
+		    converterMessage="Digite um número.">
+		    <f:validateLongRange minimum="0"/>
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite a quantidade de vagas disponíveis para a atividade"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Data da atividade" for="data" />
+			<h:inputText id="data" value="#{atividadeController.atividade.data.time}" class="form-control">
+			<f:passThroughAttribute name="type" value="date"/>
+			<f:convertDateTime pattern="yyyy-MM-dd"  timeZone="America/Sao_Paulo"/>	
+		</h:inputText>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Tipo" for="tipo" />
+			<h:selectOneMenu id="tipo" value="#{atividadeController.atividade.tipoAtividadeId}" class="form-control">
+			<f:selectItem itemLabel="selecionar" noSelectionOption="true"/>
+			<f:selectItems value="#{atividadeController.todosTipos}" var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo.id}"/>
+		</h:selectOneMenu>
+	</div>
+	
+	<div class="form-group">
+		<h:outputLabel value="Evento" for="evento"/>
+			<h:selectOneMenu id="evento" value="#{atividadeController.eventoid}" class="form-control"  
+			required="true"
+			requiredMessage="Informe um evento!.">
+			<f:ajax event="blur" render="msg"/>
+			
+				<f:selectItem itemLabel="Selecionar" noSelectionOption="true"/>
+				<f:selectItems value="#{atividadeController.todosEventos}"
+				var="evento" itemLabel="#{evento.nome}" itemValue="#{evento.id}"/>
+		</h:selectOneMenu>
+	</div>
+	
+	
+	
+	<h:commandButton value="Gravar" action="#{atividadeController.gravar}" class="btn btn-success my-4"/>
+
+	</fieldset>	
+</h:form>
+
+
+<h:form>
+	<h:dataTable class="table" value="#{atividadeController.todasAtividades}" var="a">
+		
+		<h:column>
+			<f:facet name="header">Nome</f:facet>
+			<h:outputText value="#{a.nome}"/>
+		</h:column>
+		
+		<h:column>
+				<f:facet name="header">Evento</f:facet>
+				<h:outputText value="#{a.evento.nome}"/>
+			</h:column>
+		
+		<h:column>
+			<f:facet name="header">Remover</f:facet>
+			<h:commandButton value="remove" action="#{atividadeController.remover(a)}" class="btn btn-danger"/>
+		</h:column>
+			
+		<h:column>
+			<f:facet name="header">Atualizar</f:facet>
+			<h:commandButton value="atualiza" action="#{atividadeController.carregar(a)}" class="btn btn-primary"/>
+		</h:column>
+		
+	</h:dataTable>
+</h:form>
+	
+</div>	
+</h:body>
+
+</html>
+	

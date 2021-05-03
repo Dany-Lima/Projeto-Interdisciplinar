@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+<ui:include src="modelo.xhtml"></ui:include>
+<h:head>
+<title>Sistema</title>
+	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</h:head>
+
+<h:body>
+
+<title>Apoiador</title>
+<div class="container my-3" >
+	<h:form>
+	
+		<h:messages id="msg"/>
+	
+	<fieldset>
+	<legend>Novo Apoiador</legend>
+	
+	
+	<div class="form-group">
+		<h:outputLabel value="Nome" for="nome" />
+			<h:inputText id="nome" value="#{apoiadorController.apoiador.nome}" class="form-control" 
+			required="true"
+			requiredMessage="Nome obrigatório.">
+			<f:passThroughAttribute name="placeholder"
+			value="Digite o nome"/>
+			<f:ajax event="blur" render="msg"/>
+			<f:passThroughAttribute name="placeholder" value="digite o nome"/>	
+		</h:inputText>
+	</div>
+	
+	
+		<h:outputLabel value="Categoria" for="categoria" />
+			<h:selectOneMenu id="categoria" value="#{apoiadorController.categoria}" class="form-control" 
+			required="true"
+			requiredMessage="Nome obrigatório.">
+			<f:passThroughAttribute name="placeholder"
+			value="Informe a categoria"/>
+			<f:ajax event="blur" render="msg"/>
+				<f:selectItem itemLabel="Selecionar" noSelectionOption="true"/>
+				<f:selectItems value="#{apoiadorController.todasCategorias}"
+				var="categoria" itemLabel="#{categoria.nome}" itemValue="#{categoria.id}"/>
+			</h:selectOneMenu>
+			
+		<div class="form-group">
+		<h:outputLabel value="Logo" for="logo" />
+			<h:inputText id="logo" value="#{apoiadorController.apoiador.logo}" class="form-control">
+			<f:passThroughAttribute name="placeholder" value="insira o logo do apoiador"/>	
+		</h:inputText>
+		</div>
+		
+		<h:commandButton value="Gravar" action="#{apoiadorController.gravar}" class="btn btn-success my-4"/>
+		
+	
+	</fieldset>	
+	</h:form>
+	
+	<h:form>
+		<h:dataTable class="table" value="#{apoiadorController.todosApoiadores}" var="a">
+		
+			<h:column>
+				<f:facet name="header">Identificador</f:facet>
+				<h:outputText value="#{a.id}"/>
+			</h:column>
+		
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{a.nome}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Remover</f:facet>
+				<h:commandButton value="remove" action="#{apoiadorController.remover(a)}" class="btn btn-danger"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Atualizar</f:facet>
+				<h:commandButton value="atualiza" action="#{apoiadorController.carregar(a)}" class="btn btn-primary"/>
+			</h:column>
+			
+		</h:dataTable>
+	</h:form>
+	
+</div>	
+</h:body>
+
+</html>
